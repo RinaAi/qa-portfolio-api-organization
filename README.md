@@ -5,8 +5,6 @@
 ![Tool](https://img.shields.io/badge/Tool-Postman-orange?style=flat-square)
 ![Cases](https://img.shields.io/badge/Requests-56-lightgrey?style=flat-square)
 
-Учебно-практический кейс по ручному тестированию API.
-
 **Задача:** по документации спроектировать коллекцию Postman для полного тестирования POST-метода создания организации.
 
 Хост, токены и учётные данные убраны: принадлежат заказчику, публиковать нельзя. Ниже описан подход и результаты.
