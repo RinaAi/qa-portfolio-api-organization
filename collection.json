@@ -1,0 +1,2401 @@
+{
+  "info": {
+    "_postman_id": "82e47593-ed04-4905-b777-4cf72129d610",
+    "name": "API: Создание организации (портфолио)",
+    "description": "Коллекция для тестирования POST-метода создания организации.\n\nХост, учётные данные и токены заказчика удалены. Перед запуском задайте переменные коллекции:\n- baseUrl — базовый URL API\n- bearer_token_0pt6 — токен авторизации\n- username / password — для запроса получения токена (если нужен)\n\nНайденные несоответствия:\n1. Невалидный токен → 500 вместо 401 (см. «Авторизация - невалидный токен»).\n2. Расхождение таблицы валидации и алгоритма по ОГРН при ИНН из 12 цифр (см. кейсы валидации ОГРН с ИНН 12 цифр).\n\nПримечание: сохранённые примеры ответов (response examples) удалены из экспорта, чтобы убрать чувствительные данные и уменьшить размер файла. Структура папок и все запросы сохранены.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Авторизация",
+      "item": [
+        {
+          "name": "Получение токена авторизации",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"{{username}}\", \"password\": \"{{password}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/authenticate",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "authenticate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Авторизация - запрос без токена",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581040\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Авторизация - невалидный токен",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "invalidtoken123",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581041\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            },
+            "description": "Ожидаемый результат: 401 Unauthorized. Фактический результат: 500 Internal Server Error. Возможный дефект на стороне сервера - невалидный токен не обрабатывается корректно"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Позитивные сценарии",
+      "item": [
+        {
+          "name": "Позитивный - ИНН 10 цифр с ОГРН",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581041\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Позитивный - ИНН 12 цифр без ОГРН",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Бета\",\r\n  \"inn\": \"772158104056\",\r\n  \"address\": \"ул. Пушкина, дом 5\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Мария\",\r\n      \"lastName\": \"Петрова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Позитивный - ИНН 12 цифр c ОГРН",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Гамма\",\r\n  \"inn\": \"772158104057\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Гагарина, дом 3\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Сергей\",\r\n      \"lastName\": \"Сидоров\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Позитивный - только обязательные поля",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Позитивный - все поля заполнены",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Эпсилон\",\r\n  \"inn\": \"772158104059\",\r\n  \"ogrn\": \"1072072854003\",\r\n  \"address\": \"ул. Морская, дом 15\",\r\n  \"phone\": \"+79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Дмитрий\",\r\n      \"middleName\": \"Александрович\",\r\n      \"lastName\": \"Волков\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Позитивный - несколько руководителей в head",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Зета\",\r\n  \"inn\": \"772158104060\",\r\n  \"address\": \"ул. Цветочная, дом 2\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Олег\",\r\n      \"lastName\": \"Морозов\"\r\n    },\r\n    {\r\n      \"firstName\": \"Елена\",\r\n      \"middleName\": \"Сергеевна\",\r\n      \"lastName\": \"Новикова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация name",
+      "item": [
+        {
+          "name": "Валидация name - отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"inn\": \"772158104061\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация name - 1 символ (меньше минимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"А\",\r\n  \"inn\": \"772158104061\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация name - 2 символа (граница минимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"АБ\",\r\n  \"inn\": \"772158104061\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация name - 100 символов (граница максимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\",\r\n  \"inn\": \"772158104064\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация name - 101 символ (больше максимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901\",\r\n  \"inn\": \"772158104081\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация inn",
+      "item": [
+        {
+          "name": "Валидация inn - отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - 9 цифр",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"123456789\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - 11 цифр",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"12345678912\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - 13 цифр",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"1234567891234\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - буквы вместо цифр 12 символов",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"asdfghjklzxc\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - буквы вместо цифр 10 символов",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"abcdefghij\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - уже существующий ИНН (шаг 1)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"772158104056\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация inn - уже существующий ИНН (шаг 2)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"772158104056\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            },
+            "description": "**Примечание:** данный кейс проверяет ошибку 400 при повторной регистрации организации с уже существующим ИНН. По наблюдениям в ходе тестирования, sandbox через некоторое время «забывает» ранее созданные организации (точный срок хранения нигде не задокументирован), поэтому нет гарантии, что организация с этим ИНН будет существовать в системе на момент проверки. Перед запуском этого запроса необходимо один раз выполнить кейс «Валидация inn - уже существующий ИНН (шаг 1)» (создаёт организацию с ИНН 772158104056), либо любой другой запрос, создающий организацию с этим же ИНН."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация ogrn",
+      "item": [
+        {
+          "name": "Валидация ОГРН - ИНН 10 цифр ОГРН отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581042\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация ОГРН - ИНН 10 цифр ОГРН 12 цифр",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581043\",\r\n  \"ogrn\": \"107207285400\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация ОГРН - ИНН 10 цифр ОГРН 14 цифр",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581043\",\r\n  \"ogrn\": \"10720728540022\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация ОГРН - ИНН 10 цифр ОГРН буквами",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Альфа\",\r\n  \"inn\": \"7721581044\",\r\n  \"ogrn\": \"asdfghjklzxcv\",\r\n  \"address\": \"ул. Ленина, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Иван\",\r\n      \"middleName\": \"Иванович\",\r\n      \"lastName\": \"Иванов\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация ОГРН - ИНН 12 цифр c невалидным ОГРН (шаг 1)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Гамма\",\r\n  \"inn\": \"772158104077\",\r\n  \"ogrn\": \"10720728540021\",\r\n  \"address\": \"ул. Гагарина, дом 3\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Сергей\",\r\n      \"lastName\": \"Сидоров\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            },
+            "description": "Несоответствие в документации:\n\nВ таблице валидации указано, что ОГРН при заполнении должен соответствовать паттерну \\[0-9\\]{13}.\n\nВ алгоритме работы метода при ИНН = 12 цифр проверка ОГРН отсутствует.\n\nФактическое поведение API соответствует алгоритму (невалидный ОГРН принимается и сохраняется)."
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация ОГРН - ИНН 12 цифр c невалидным ОГРН (шаг 2)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization/80b3fb5c-d046-4573-9882-fede8b635dc1",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization",
+                "80b3fb5c-d046-4573-9882-fede8b635dc1"
+              ]
+            },
+            "description": "**Примечание**: данный кейс проверяет, что организация с невалидным ОГРН (при ИНН = 12 цифр) действительно сохранилась в системе. Id организации генерируется сервером при создании и заранее неизвестен, к тому же по наблюдениям sandbox через некоторое время «забывает» созданные организации (срок хранения не задокументирован) - поэтому запись из предыдущего запуска может уже не существовать. Перед запуском этого запроса необходимо один раз выполнить кейс «Валидация ОГРН - ИНН 12 цифр c невалидным ОГРН (шаг 1)» (создает организацию и возвращает ее id), после чего GET-запрос обращается к этому id."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация address",
+      "item": [
+        {
+          "name": "Валидация address - отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация address - 4 символа (меньше минимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104065\",\r\n  \"address\": \"ул. \",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация address - 5 символов (граница минимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104066\",\r\n  \"address\": \"ул. С\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация address - 255 символов (граница максимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104067\",\r\n  \"address\": \"349720512802025325377517860128069139835448632677243466818848047748400634083803889387410154466729140049275462985706743733030906743121581428815179279648578283672144494801993021630798184104526546194668780667508465938967578513132432841564654747114570139925577\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация address - 256 символов (больше максимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104068\",\r\n  \"address\": \"3497205128020253253775178601280691398354486326772434668188480477484006340838038893874101544667291400492754629857067437330309067431215814288151792796485782836721444948019930216307981841045265461946687806675084659389675785131324328415646547471145701399255777\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация phone",
+      "item": [
+        {
+          "name": "Валидация phone - формат 7X",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104069\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"phone\": \"79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация phone - формат 8X",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104084\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"phone\": \"89009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация phone - некорректный формат",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104085\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"phone\": \"+7(900)123-45-67\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация phone - 10 цифр (меньше минимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104070\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"phone\": \"7009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация phone - 12 цифр (больше максимума)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104086\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"phone\": \"790098765431\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация head",
+      "item": [
+        {
+          "name": "Валидация head - отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - пустой массив []",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - значение null",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - firstName отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - firstName 1 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"А\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - firstName 2 символа",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104071\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Ан\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - firstName 60 символов",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104072\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщ\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - firstName 61 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104087\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщу\",\r\n      \"lastName\": \"Козлова\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - lastName отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - lastName 1 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104058\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"К\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - lastName 2 символа",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104073\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"Ка\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - lastName 60 символов",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104074\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщ\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - lastName 61 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Дельта\",\r\n  \"inn\": \"772158104088\",\r\n  \"address\": \"ул. Садовая, дом 7\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Анна\",\r\n      \"lastName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщу\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - middleName 1 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Эпсилон\",\r\n  \"inn\": \"772158104075\",\r\n  \"ogrn\": \"1072072854003\",\r\n  \"address\": \"ул. Морская, дом 15\",\r\n  \"phone\": \"+79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Дмитрий\",\r\n      \"middleName\": \"А\",\r\n      \"lastName\": \"Волков\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - middleName 2 символа",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Эпсилон\",\r\n  \"inn\": \"772158104075\",\r\n  \"ogrn\": \"1072072854003\",\r\n  \"address\": \"ул. Морская, дом 15\",\r\n  \"phone\": \"+79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Дмитрий\",\r\n      \"middleName\": \"Ал\",\r\n      \"lastName\": \"Волков\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - middleName 60 символов",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Эпсилон\",\r\n  \"inn\": \"772158104076\",\r\n  \"ogrn\": \"1072072854003\",\r\n  \"address\": \"ул. Морская, дом 15\",\r\n  \"phone\": \"+79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Дмитрий\",\r\n      \"middleName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщ\",\r\n      \"lastName\": \"Волков\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Валидация head - middleName 61 символ",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Эпсилон\",\r\n  \"inn\": \"772158104089\",\r\n  \"ogrn\": \"1072072854003\",\r\n  \"address\": \"ул. Морская, дом 15\",\r\n  \"phone\": \"+79009876543\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Дмитрий\",\r\n      \"middleName\": \"АбвгдеёжзийклмнопрстуфхцчшщъыьэюяАбвгдеёжзийклмнопрстуфхцчшщу\",\r\n      \"lastName\": \"Волков\"\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Валидация тела запроса",
+      "item": [
+        {
+          "name": "Тело запроса - пустой объект",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Тело запроса - отсутствует",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Тело запроса - невалидный JSON (битый синтаксис)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация\",\r\n  \"inn\": \"7721581045\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\",\r\n    }\r\n  ]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Тело запроса - лишнее неизвестное поле",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearer_token_0pt6}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Тестовая организация Икс\",\r\n  \"inn\": \"7721581046\",\r\n  \"ogrn\": \"1072072854002\",\r\n  \"address\": \"ул. Тестовая, дом 1\",\r\n  \"phone\": \"+79001234567\",\r\n  \"unknownField\": \"какое-то значение\",\r\n  \"head\": [\r\n    {\r\n      \"firstName\": \"Тест\",\r\n      \"lastName\": \"Тестов\",\r\n      \"extraHeadField\": 12345\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/de/organization",
+              "host": [
+                "example",
+                "com"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "de",
+                "organization"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_0pt6",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://example.com",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
