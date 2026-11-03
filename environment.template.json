@@ -1,0 +1,11 @@
+{
+  "id": "env-template",
+  "name": "API Organization - template",
+  "values": [
+    { "key": "baseUrl", "value": "https://your-api.example", "type": "default", "enabled": true },
+    { "key": "bearer_token_0pt6", "value": "", "type": "secret", "enabled": true },
+    { "key": "username", "value": "", "type": "default", "enabled": true },
+    { "key": "password", "value": "", "type": "secret", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment"
+}
